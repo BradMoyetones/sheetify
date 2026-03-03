@@ -1,0 +1,84 @@
+name: Release Python App
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    permissions:
+      contents: write
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-13, macos-latest, ubuntu-latest]
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Install Linux AppImage Tooling
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libfuse2
+          wget https://github.com/AppImage/AppImageKit/releases/download/13/appimagetool-x86_64.AppImage
+          chmod +x appimagetool-x86_64.AppImage
+          echo "APPIMAGE_TOOL=$(pwd)/appimagetool-x86_64.AppImage" >> $GITHUB_ENV
+
+      - name: Build with PyInstaller
+        run: pyinstaller CSVtoExcelPro.spec
+
+      - name: Prepare Artifacts (Bash)
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            mv dist/CSV-to-Excel-Pro.exe "CSV-to-Excel-Pro-Win.exe"
+            echo "ASSET_NAME=CSV-to-Excel-Pro-Win.exe" >> $GITHUB_ENV
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            # Identificar arquitectura (Intel vs Apple Silicon)
+            ARCH=$(uname -m)
+            cd dist
+            zip -r "../CSV-to-Excel-Pro-Mac-$ARCH.zip" "CSV-to-Excel-Pro.app"
+            cd ..
+            echo "ASSET_NAME=CSV-to-Excel-Pro-Mac-$ARCH.zip" >> $GITHUB_ENV
+          else
+            # Lógica AppImage para Linux
+            mkdir -p AppDir/usr/bin
+            cp -r dist/CSV-to-Excel-Pro/* AppDir/usr/bin/
+            echo -e "[Desktop Entry]\nName=CSV to Excel Pro\nExec=CSV-to-Excel-Pro\nIcon=icon\nType=Application\nCategories=Utility;" > AppDir/csv-pro.desktop
+            cp assets/file.svg AppDir/icon.svg
+            ARCH=x86_64 $APPIMAGE_TOOL AppDir "CSV-to-Excel-Pro-Linux.AppImage"
+            echo "ASSET_NAME=CSV-to-Excel-Pro-Linux.AppImage" >> $GITHUB_ENV
+          fi
+
+      - name: Upload Binary to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.ASSET_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update Release Notes
+        if: matrix.os == 'ubuntu-latest'
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: releases/notes/latest.md
+          append_body: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
