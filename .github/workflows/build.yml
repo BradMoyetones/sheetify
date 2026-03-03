@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest, macos-12]
+        os: [windows-latest, macos-latest]
 
     steps:
       - name: Check out Git repository
@@ -40,13 +40,10 @@ jobs:
             mv dist/CSV-to-Excel-Pro.exe "CSV-to-Excel-Pro-Win.exe"
             echo "ASSET_NAME=CSV-to-Excel-Pro-Win.exe" >> $GITHUB_ENV
           else
-            ARCH=$(uname -m)
-            FILE_NAME="CSV-to-Excel-Pro-Mac-$ARCH.zip"
-            
             cd dist
-            zip -r "../$FILE_NAME" "CSV-to-Excel-Pro.app"
+            zip -r "../CSV-to-Excel-Pro-Mac.zip" "CSV-to-Excel-Pro.app"
             cd ..
-            echo "ASSET_NAME=$FILE_NAME" >> $GITHUB_ENV
+            echo "ASSET_NAME=CSV-to-Excel-Pro-Mac.zip" >> $GITHUB_ENV
           fi
 
       - name: Upload to Release
