@@ -1,3 +1,4 @@
+import os
 import sys
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QIcon
@@ -16,9 +17,10 @@ def main():
     window.setMinimumSize(850, 600)
     
     # Icono de app (opcional)
-    # icon_path = os.path.join(os.path.dirname(__file__), 'assets', 'app_icon.png')
-    # if os.path.exists(icon_path):
-    #    window.setWindowIcon(QIcon(icon_path))
+    icon_path = os.path.join(os.path.dirname(__file__), 'assets', 'sheetify_icon.png')
+    print("Icon path: ", icon_path)
+    if os.path.exists(icon_path):
+       window.setWindowIcon(QIcon(icon_path))
 
     # Mostrar y arrancar el Event Loop
     window.show()
