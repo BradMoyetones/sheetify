@@ -1,14 +1,21 @@
-# Release v1.0.0 - Procesador Inteligente de Datos
+# Release v1.1.0 - El Renacimiento: Sheetify 🚀
 
-Esta versión inicial introduce una herramienta robusta para la gestión y conversión de archivos CSV a Excel, diseñada con un enfoque en la flexibilidad y productividad.
+Esta actualización marca un hito importante con el **rebranding oficial** del proyecto a **Sheetify**, acompañado de mejoras críticas en el empaquetado y la gestión de recursos internos.
 
-### Características principales:
-- **Gestión Multi-archivo:** Soporte nativo para arrastrar y soltar archivos CSV y contenedores ZIP.
-- **Accordion de ZIPs:** Visualización inteligente del contenido de archivos comprimidos sin necesidad de extracción manual.
-- **Exportación Flexible:** Permite generar un único Excel maestro con múltiples hojas o archivos independientes por cada fuente.
-- **Renombrado Dinámico:** Edición directa del nombre de salida de cada archivo desde la interfaz.
-- **Modo Oscuro Premium:** Interfaz refinada basada en la paleta Slate/Sky para una experiencia visual profesional.
-- **Multiplataforma:** Binarios nativos para Windows, macOS (Intel/Silicon) y Linux (AppImage).
+### Novedades de esta versión:
+- **Nueva Identidad Visual:** Evolución de "CSV to Excel Pro" a **Sheetify**, incluyendo un nuevo set de iconos y logotipos integrados.
+- **Optimización de Assets:** Refactorización completa del manejo de rutas para asegurar que los recursos visuales se carguen correctamente en entornos de producción y desarrollo.
+- **Build Engine Mejorado:** Configuración de compilación (`.spec`) actualizada para una integración nativa más sólida en Windows y macOS.
+- **Corrección de Iconos:** Solucionado el problema de persistencia del logo de Python; ahora el ejecutable y la ventana muestran la identidad de Sheetify por defecto.
+
+### Lo que ya conoces y amas:
+- **Gestión Multi-archivo:** Drag & drop para CSVs y ZIPs.
+- **Accordion de ZIPs:** Previsualización inteligente de archivos comprimidos.
+- **Exportación Flexible:** Generación de archivos únicos o múltiples hojas de cálculo.
 
 ---
-*Procesamiento de datos rápido, limpio y sin complicaciones.*
+
+*Sheetify: Procesamiento de datos rápido, limpio y ahora con una identidad más sólida.*
+
+> [!NOTE]
+> Se sigue trabajando en un logo oficial para la app.
