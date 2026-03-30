@@ -65,7 +65,8 @@ pyinstaller CSV to Excel Pro.spec
 
 3. Encontrarás el resultado en la carpeta `dist/`.
 
-*Nota: Para generar el ejecutable de Windows debes estar en Windows, y para el de Mac debes estar en macOS.*
+> [!NOTE]
+> Para generar el ejecutable de Windows debes estar en Windows, y para el de Mac debes estar en macOS.
 
 ---
 
