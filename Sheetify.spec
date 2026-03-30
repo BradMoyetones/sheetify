@@ -4,6 +4,9 @@ import os
 
 block_cipher = None
 
+icon_ico = os.path.join('assets', 'sheetify_icon.ico')
+icon_icns = os.path.join('assets', 'sheetify_icon.icns')
+
 a = Analysis(
     ['main.py'],
     pathex=[],
@@ -32,7 +35,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='CSV-to-Excel-Pro',
+    name='Sheetify',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -41,12 +44,12 @@ exe = EXE(
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
-    icon='assets/icon.ico' if os.path.exists('assets/icon.ico') else None
+    icon=icon_ico if os.path.exists(icon_ico) else None
 )
 
 app = BUNDLE(
     exe,
-    name='CSV-to-Excel-Pro.app',
-    icon=None,
-    bundle_identifier='com.brad.csvtoexcel',
+    name='Sheetify.app',
+    icon=icon_icns if os.path.exists(icon_icns) else None,
+    bundle_identifier='com.brad.sheetify',
 )

@@ -31,19 +31,19 @@ jobs:
           pip install PySide6==6.10.1 pandas==2.2.0 openpyxl==3.1.2 xlsxwriter==3.1.9 pyinstaller==6.17.0
 
       - name: Build with PyInstaller
-        run: pyinstaller CSVtoExcelPro.spec
+        run: pyinstaller Sheetify.spec
 
       - name: Prepare Artifacts
         shell: bash
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
-            mv dist/CSV-to-Excel-Pro.exe "CSV-to-Excel-Pro-Win.exe"
-            echo "ASSET_NAME=CSV-to-Excel-Pro-Win.exe" >> $GITHUB_ENV
+            mv dist/Sheetify.exe "Sheetify-Win.exe"
+            echo "ASSET_NAME=Sheetify-Win.exe" >> $GITHUB_ENV
           else
             cd dist
-            zip -r "../CSV-to-Excel-Pro-Mac.zip" "CSV-to-Excel-Pro.app"
+            zip -r "../Sheetify-Mac.zip" "Sheetify.app"
             cd ..
-            echo "ASSET_NAME=CSV-to-Excel-Pro-Mac.zip" >> $GITHUB_ENV
+            echo "ASSET_NAME=Sheetify-Mac.zip" >> $GITHUB_ENV
           fi
 
       - name: Upload to Release
