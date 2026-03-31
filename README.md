@@ -52,14 +52,14 @@ Como en Node.js usamos `package.json`, aquí usamos el `requirements.txt`. Estos
 
 ## 🏗️ Generar Ejecutables (Build)
 
-Se ha configurado un archivo `CSV to Excel Pro.spec` para empaquetar la aplicación junto con sus `assets` de forma automática.
+Se ha configurado un archivo `Sheetify.spec` para empaquetar la aplicación junto con sus `assets` de forma automática.
 
 ### Para Windows (.exe) o macOS (.app)
 
 1. Instala PyInstaller: `pip install pyinstaller`
 2. Ejecuta el build:
 ```bash
-pyinstaller CSV to Excel Pro.spec
+pyinstaller Sheetify.spec
 ```
 
 
@@ -82,4 +82,9 @@ pip install watchdog
 
 # Correr con auto-restart
 watchmedo auto-restart --patterns="*.py" --recursive -- python main.py
+```
+
+### Ver estructura de carpetas
+```bash
+tree -I '.github|.venv|build|dist|releases'
 ```
