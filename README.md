@@ -1,4 +1,4 @@
-# CSV to Excel Pro
+# Sheetify
 
 Esta es una aplicación de escritorio para convertir archivos CSV a Excel.
 
