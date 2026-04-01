@@ -1,3 +1,4 @@
+from PySide6.QtCore import QParallelAnimationGroup
 from app.core.utils import render_svg_icon, get_resource_path
 import sys
 import os
@@ -55,7 +56,8 @@ class MainWindow(QMainWindow):
         # --- SIDEBAR ---
         self.sidebar = QFrame()
         self.sidebar.setObjectName("sidebar")
-        self.sidebar.setFixedWidth(200)
+        self.sidebar.setMinimumWidth(200)
+        self.sidebar.setMaximumWidth(200)
         sidebar_layout = QVBoxLayout(self.sidebar)
         sidebar_layout.setContentsMargins(12, 20, 12, 20)
         
@@ -110,19 +112,28 @@ class MainWindow(QMainWindow):
         self.anim.setEasingCurve(QEasingCurve.OutCubic)
 
     def toggle_sidebar(self):
-        if self.is_expanded:
-            target_width = 70
-            self.btn_toggle.setText("")
-            for btn in self.sidebar_buttons: btn.setText("")  # noqa: E701
-            # Al colapsar, podemos hacer que el radio sea mayor o igual
-            self.content_wrapper.setStyleSheet("border-radius: 16px;") 
-        else:
-            target_width = 200
-            self.btn_toggle.setText("  Ocultar")
-            for btn in self.sidebar_buttons: btn.setText(btn.property("original_text"))  # noqa: E701
+        # 1. Definir valores
+        start_width = self.sidebar.width()
+        target_width = 70 if self.is_expanded else 200
+        
+        # 2. Configurar la animación del Minimum
+        self.anim_min = QPropertyAnimation(self.sidebar, b"minimumWidth")
+        self.anim_min.setDuration(350)
+        self.anim_min.setStartValue(start_width)
+        self.anim_min.setEndValue(target_width)
+        self.anim_min.setEasingCurve(QEasingCurve.OutCubic)
 
-        self.anim.setStartValue(self.sidebar.width())
-        self.anim.setEndValue(target_width)
-        self.anim.start()
-        self.sidebar.setFixedWidth(target_width)
+        # 3. Configurar la animación del Maximum (Para que corran juntas)
+        self.anim_max = QPropertyAnimation(self.sidebar, b"maximumWidth")
+        self.anim_max.setDuration(350)
+        self.anim_max.setStartValue(start_width)
+        self.anim_max.setEndValue(target_width)
+        self.anim_max.setEasingCurve(QEasingCurve.OutCubic)
+
+        # 4. Crear el grupo de animación
+        self.group = QParallelAnimationGroup()
+        self.group.addAnimation(self.anim_min)
+        self.group.addAnimation(self.anim_max)
+
+        self.group.start()
         self.is_expanded = not self.is_expanded
